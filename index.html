@@ -41,8 +41,8 @@
         
         .glass-panel {
             background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.07);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
@@ -99,7 +99,7 @@
                 <a href="#casos" class="hover:text-amber-400 transition-colors">Usos No Intencionados</a>
                 <a href="#avaricia" class="hover:text-amber-400 transition-colors">La Economia de la Avaricia</a>
                 <a href="#simulador" class="hover:text-amber-400 transition-colors">Simulador etico</a>
-                <a href="#txt-viewer" class="text-amber-400 hover:text-amber-300 flex items-center gap-1 font-semibold">
+                <a href="#txt-viewer" class="hover:text-amber-400 transition-colors flex items-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Version TXT
                 </a>
@@ -121,6 +121,13 @@
             <a href="#simulador" class="block py-2 text-slate-300 hover:text-amber-400">Simulador etico</a>
             <a href="#txt-viewer" class="block py-2 text-amber-400 font-semibold">Version TXT (Modo Lectura)</a>
         </div>
+
+        <center>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-amber-400 text-xs sm:text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Estudio Sociologico & Divulgacion Tecnologica
+            </div>
+        </center>
     </header>
     
     <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
@@ -130,11 +137,6 @@
         </div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-amber-400 text-xs sm:text-sm font-medium mb-6">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                Estudio Sociologico & Divulgacion Tecnologica
-            </div>
-
             <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
                 La Soledad Algoritmica: <br class="hidden sm:inline">
                 <span class="gradient-text">Tu vulnerabilidad. Es mi cheque.</span>
