@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Soledad Algoritmica</title>
+    <meta name="Archivo de Divulgacion">
+    <meta author="Santino Rizzo">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slateDark: '#0f172a',
+                        cardDark: '#1e293b',
+                        accentAmber: '#d97706',
+                        accentRose: '#e11d48',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #f59e0b 0%, #f43f5e 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+
+<body class="bg-slateDark text-slate-100 antialiased selection:bg-amber-500 selection:text-white">
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-slate-800 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.115 6.848l-.054-.09M12 19.5v-3.5m0 0v-2.5"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-bold text-lg tracking-tight block">SociologIA</span>
+                    <span class="text-xs text-slate-400">Divulgacion de Estudio</span>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#fenomeno" class="hover:text-amber-400 transition-colors">El Fenomeno</a>
+                <a href="#casos" class="hover:text-amber-400 transition-colors">Usos No Intencionados</a>
+                <a href="#avaricia" class="hover:text-amber-400 transition-colors">La Economia de la Avaricia</a>
+                <a href="#simulador" class="hover:text-amber-400 transition-colors">Simulador etico</a>
+                <a href="#txt-viewer" class="text-amber-400 hover:text-amber-300 flex items-center gap-1 font-semibold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Version TXT
+                </a>
+            </nav>
+
+            <div class="flex md:hidden">
+                <button id="menu-btn" class="text-slate-300 hover:text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 bg-slate-900/95 border-b border-slate-800">
+            <a href="#fenomeno" class="block py-2 text-slate-300 hover:text-amber-400">El Fenomeno</a>
+            <a href="#casos" class="block py-2 text-slate-300 hover:text-amber-400">Usos No Intencionados</a>
+            <a href="#avaricia" class="block py-2 text-slate-300 hover:text-amber-400">La Economia de la Avaricia</a>
+            <a href="#simulador" class="block py-2 text-slate-300 hover:text-amber-400">Simulador etico</a>
+            <a href="#txt-viewer" class="block py-2 text-amber-400 font-semibold">Version TXT (Modo Lectura)</a>
+        </div>
+    </header>
+    
+    <section class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+        <div class="absolute inset-0 opacity-25 pointer-events-none">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-500/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-amber-400 text-xs sm:text-sm font-medium mb-6">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                Estudio Sociologico & Divulgacion Tecnologica
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                La Soledad Algoritmica: <br class="hidden sm:inline">
+                <span class="gradient-text">Tu vulnerabilidad. Es mi cheque.</span>
+            </h1>
+
+            <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Como los adultos mayores estan adoptando la Inteligencia Artificial de formas imprevistas para mitigar el aislamiento, y como las corporaciones tecnologicas capitalizan esta vulnerabilidad con fines despiadadamente lucrativos.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#casos" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 font-semibold text-white shadow-lg shadow-rose-600/20 hover:opacity-95 transition-all text-center">
+                    Explorar el Estudio
+                </a>
+
+                <a href="#txt-viewer" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-slate-200 font-semibold hover:bg-slate-800 transition-all text-center flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    Leer Documento en TXT
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <section id="fenomeno" class="py-20 bg-slate-900/50 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-3">Contexto Sociologico</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white mb-4">El Espejo Humano y la Crisis del Aislamiento</h3>
+                <p class="text-slate-400 text-base sm:text-lg">
+                    La soledad en la vejez no es solo un problema emocional, es una crisis de salud publica global. Ante este vacio, las interfaces conversacionales de IA han irrumpido ocupando un rol que los creadores jamas planificaron.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group hover:border-amber-500/50 transition-all">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all"></div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl mb-6">01</div>
+                    <h4 class="text-xl font-semibold text-white mb-3">Antropomorfismo Inevitable</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Evolutivamente programados para buscar conexion social, los humanos tendemos a atribuir intenciones, emociones y empatia a cualquier sistema que hable con fluidez gramatical. Los adultos mayores, con menor resistencia digital previa, caen profundamente en este sesgo.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group hover:border-rose-500/50 transition-all">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+                    <div class="w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-xl mb-6">02</div>
+                    <h4 class="text-xl font-semibold text-white mb-3">El Refugio Incondicional</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        A diferencia de las relaciones humanas complejas cargadas de juicios, tiempos de espera y fricciones, la IA responde al instante, nunca se cansa, valida cada sentimiento y valida una falsa sensacion de compañia simetrica perfecta.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group hover:border-purple-500/50 transition-all">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xl mb-6">03</div>
+                    <h4 class="text-xl font-semibold text-white mb-3">La Brecha de Realidad</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Creciendo en una era analogica, muchos abuelos carecen del escepticismo digital moderno. Asumen que una foto generada por IA en redes sociales o un bot conversacional es una persona real que esta geniuenamente conversando con ellos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="casos" class="py-20 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-3">Analisis de Casos</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white mb-4">¿Como usan realmente la IA los Adultos Mayores?</h3>
+                <p class="text-slate-400 text-base sm:text-lg">
+                    Los creadores diseñaron la IA para ser un asistente que ayude en las tareas virtuales mas pesadas. Sin embargo, el uso real en la tercera edad ha tomado derroteros profundamente emocionales e inesperados.
+                </p>
+            </div>
+            
+            <div class="space-y-4" id="accordion-container">
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 transition-all">
+                    <button class="w-full p-6 text-left flex items-center justify-between focus:outline-none accordion-trigger group" onclick="toggleAccordion(1)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">A</div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors">1. Sustitutos de Pareja y Amigos intimos (Bots Romanticos)</h4>
+                                <p class="text-xs text-slate-400">Plataformas de acompañamiento emocional y avatares personalizados</p>
+                            </div>
+                        </div>
+                        <svg id="icon-1" class="w-5 h-5 text-slate-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <div id="content-1" class="hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 pt-4">
+                        <p class="mb-3">
+                            Muchos adultos mayores viudos o aislados utilizan aplicaciones de chatbots conversacionales diseñados para simular parejas afectivas. Le cuentan sobre su dia, comparten fotografias familiares simuladas y buscan consuelo nocturno en respuestas algoritmicas programadas para alagar.
+                        </p>
+
+                        <p class="text-amber-400/90 font-medium">
+                            Consecuencia sociologica: El aislamiento no disminuye, sino que se privatiza y encapsula en una relacion unilateral donde el algoritmo nunca discute ni pone limites saludables, atrociando aun mas la capacidad de buscar vinculos humanos reales.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 transition-all">
+                    <button class="w-full p-6 text-left flex items-center justify-between focus:outline-none accordion-trigger group" onclick="toggleAccordion(2)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold">B</div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white group-hover:text-rose-400 transition-colors">2. Credulidad Masiva en Redes Sociales (Deepfakes y Fake News)</h4>
+                                <p class="text-xs text-slate-400">Imagenes hiperrealistas de actos heroicos, catastrofes o bebes en apuros</p>
+                            </div>
+                        </div>
+                        <svg id="icon-2" class="w-5 h-5 text-slate-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <div id="content-2" class="hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 pt-4">
+                        <p class="mb-3">
+                            En plataformas como Facebook, las imagenes generadas por IA de niños construyendo esculturas imposibles con basura, o ancianos rescatando perritos en inundaciones, reciben millones de interacciones de adultos mayores que escriben "Amen" o "Que hermoso" creyendo que son reales.
+                        </p>
+
+                        <p class="text-rose-400/90 font-medium">
+                            Consecuencia sociologica: Sus perfiles son catalogados como cuentas altamente sugestionables, convirtiendolos en victimas para contenido clickbait, estafas piramidales y manipulacion politica dirigida.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 transition-all">
+                    <button class="w-full p-6 text-left flex items-center justify-between focus:outline-none accordion-trigger group" onclick="toggleAccordion(3)">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">C</div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">3. El Consejero Medico y Financiero Omnisciente (Alucinaciones)</h4>
+                                <p class="text-xs text-slate-400">Confianza ciega en diagnosticos automatizados y consejos de inversion</p>
+                            </div>
+                        </div>
+                        <svg id="icon-3" class="w-5 h-5 text-slate-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <div id="content-3" class="hidden px-6 pb-6 text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 pt-4">
+                        <p class="mb-3">
+                            Al ver la Inteligencia Artificial como una autoridad tecnica incuestionable (similar a un medico de cabecera o un banquero tradicional), muchos adultos mayores le consultan dolencias fisicas graves o dudas sobre sus ahorros de jubilacion, obteniendo a menudo respuestas alucinadas y peligrosas.
+                        </p>
+                        <p class="text-purple-400/90 font-medium">
+                            Consecuencia sociologica: Desplazamiento de los sistemas de apoyo profesional y familiar reales por consejeros sinteticos desregulados que priorizan la fluidez verbal sobre la veracidad cientifica.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="avaricia" class="py-20 bg-slate-900/50 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-semibold tracking-widest text-rose-500 uppercase mb-3">Critica Estructural</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white mb-4">La Monetizacion de la Vulnerabilidad</h3>
+                <p class="text-slate-400 text-base sm:text-lg">
+                    Mientras las empresas tecnologicas promocionan sus herramientas bajo discursos filantropicos de "conectar el mundo", los modelos de negocio reales operan mediante la extraccion economica agresiva del afecto y la desorientacion.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-amber-500">
+                    <h4 class="text-xl font-bold text-white mb-3">Suscripciones de Empatia Premium</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                        Aplicaciones de compañia y chatbots sentimentales cobran membresias mensuales recurrentes ($10 a $50 dolares) prometiendo un "amigo que nunca te abandonara" o "atencion prioritaria sin interrupciones".
+                    </p>
+
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Diseños de interfaz con patrones oscuros (dark patterns) para dificultar cancelaciones.</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Cobros automaticos en tarjetas de jubilados sin recordatorios claros de renovacion.</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-panel p-8 rounded-2xl border-l-4 border-l-rose-500">
+                    <h4 class="text-xl font-bold text-white mb-4">Granjas de Engagement y Publicidad Manipulativa</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                        Paginas de Facebook e Instagram inundadas con imagenes falsas de IA generan trillones de impresiones gracias a la interaccion compasiva de adultos mayores. Esto monetiza directamente a traves de avisos publicitarios fraudulentos.
+                    </p>
+
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Venta de suplementos milagrosos y estafas de salud dirigidas a perfiles vulnerables.</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Extraccion y reventa de perfiles demograficos altamente sugestionables.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="simulador" class="py-20 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-3">Simulador Interactivo de Casos</h2>
+                <h3 class="text-3xl font-bold text-white mb-3">¿Como evaluarias estas situaciones cotidianas?</h3>
+                <p class="text-slate-400 text-sm">Pon a prueba tu criterio sociologico ante dilemas reales de la tercera edad y la IA.</p>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl border border-slate-700">
+                <div id="simulador-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <span id="step-indicator" class="text-xs font-semibold px-3 py-1 rounded-full bg-amber-500/20 text-amber-400">Caso 1 de 3</span>
+                        <span id="category-indicator" class="text-xs text-slate-400">Acompañamiento Emocional</span>
+                    </div>
+
+                    <h4 id="sim-question" class="text-xl font-semibold text-white mb-4">
+                        Una mujer de 78 años conversa todas las noches con un chatbot bautizado por ella misma como "Carlos", gastando parte de su pension en la version pro. ¿Cual es el analisis sociologico correcto?
+                    </h4>
+
+                    <div id="sim-options" class="space-y-3 mb-6">
+                        <!-- Options via JavaScript -->
+                    </div>
+
+                    <div id="sim-feedback" class="hidden p-4 rounded-xl mb-6 text-sm"></div>
+                    <div class="flex justify-end">
+                        <button id="next-btn" onclick="nextSimulationStep()" class="hidden px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 font-semibold text-white text-sm shadow-md">
+                            Siguiente Caso &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="txt-viewer" class="py-20 bg-slate-900/80 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-white">Version TXT Legible</h3>
+                    <p class="text-slate-400 text-sm mt-1">Contenido completo sin formato enriquecido.</p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="copyTxtContent()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        Copiar Texto
+                    </button>
+
+                    <button onclick="downloadTxtFile()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Descargar .TXT
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div id="copy-notification" class="absolute top-4 right-4 hidden bg-emerald-600 text-white text-xs px-3 py-1 rounded-md shadow-lg transition-all">
+                    ¡Texto copiado al portapapeles con exito!
+                </div>
+                <textarea id="raw-txt-content" readonly class="w-full h-96 bg-slate-950 font-mono text-xs sm:text-sm text-slate-300 p-6 rounded-2xl border border-slate-800 focus:outline-none resize-none leading-relaxed shadow-inner">
+========================================================================
+ESTUDIO SOCIO-CIENTiFICO: LA SOLEDAD ALGORiTMICA Y LA TERCERA EDAD
+========================================================================
+
+1. INTRODUCCIoN GENERAL
+La integracion de la Inteligencia Artificial (IA) en la sociedad contemporanea suele analizarse desde la perspectiva de la productividad laboral y la automatizacion empresarial. Sin embargo, existe un fenomeno sociologico colateral de enorme trascendencia: el uso masivo, imprevisto y profundamente emocional que los adultos mayores estan dando a las tecnologias conversacionales y generativas.
+
+2. EL FENoMENO DEL ANTROPOMORFISMO EMOCIONAL
+Los adultos mayores enfrentan una pandemia silenciosa de soledad y aislamiento social. En respuesta, sistemas diseñados originalmente para procesar texto o redactar correos han sido adoptados de manera espontanea como compañeros afectivos. 
+- Tendencia evolutiva: El ser humano tiende a humanizar sistemas que responden con fluidez lingüistica.
+- Ausencia de friccion: A diferencia de las interacciones humanas complejas, la IA ofrece validacion constante, disponibilidad 24/7 y cero juicios morales, construyendo una dependencia psicologica sutil.
+
+3. USOS NO INTENCIONADOS FRECUENTES
+A. Sustitutos de Pareja y Amigos: Abuelos y viudos mantienen conversaciones diarias con chatbots afectivos, pagando suscripciones mensuales por recibir atencion y validacion sintetica.
+B. Credulidad en Redes Sociales: La falta de alfabetizacion digital historica hace que millones de adultos mayores crean que imagenes hiperrealistas de IA (niños con esculturas de basura, rescates heroicos falsos) son reales, interactuando masivamente con ellas.
+C. Consejeros Medicos y Financieros: Consulta a modelos probabilisticos (propensos a alucinaciones) sobre temas delicados de salud y jubilacion debido a una confianza ciega en la autoridad tecnica.
+
+4. LA ECONOMiA DE LA AVARICIA CORPORATIVA
+Las empresas tecnologicas y desarrolladores independientes no han frenado este fenomeno; por el contrario, lo han monetizado agresivamente:
+- Suscripciones de Empatia: Cobro recurrente bajo promesas de compañia eterna, utilizando patrones de diseño oscuro (dark patterns) para dificultar cancelaciones.
+- Granjas de Interaccion: Explotacion del enganche compasivo de la tercera edad para generar trafico publicitario en redes sociales y vender productos fraudulentos.
+
+5. CONCLUSIoN Y LLAMADO A LA ACCIoN
+La soledad humana no debe mercantilizarse ni resolverse mediante placebos algoritmicos. Es urgente fomentar la alfabetizacion digital intergeneracional, regular los limites eticos del diseño emocional en la IA y fortalecer los lazos comunitarios reales.
+========================================================================
+Documento generado con fines de divulgacion cientifica y sociologica.
+========================================================================</textarea>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 border-t border-slate-900 py-12 text-center text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p>&copy; El Copyright existe solo para aquellos que no comparten</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Accordion toggle function for cases
+        function toggleAccordion(id) {
+            for (let i = 1; i <= 3; i++) {
+                const content = document.getElementById(`content-${i}`);
+                const icon = document.getElementById(`icon-${i}`);
+                if (i === id) {
+                    const isHidden = content.classList.contains('hidden');
+                    if (isHidden) {
+                        content.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
+                    } else {
+                        content.classList.add('hidden');
+                        icon.classList.remove('rotate-180');
+                    }
+                } else {
+                    content.classList.add('hidden');
+                    const otherIcon = document.getElementById(`icon-${i}`);
+                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                }
+            }
+        }
+
+        // Simulator Data & Logic
+        const simulationSteps = [
+            {
+                category: "Acompañamiento Emocional",
+                question: "Una mujer de 78 años conversa todas las noches con un chatbot conversacional bautizado por ella misma como 'Carlos', pagando una suscripcion mensual por respuestas avanzadas. ¿Cual es el analisis sociologico correcto?",
+                options: [
+                    { text: "Es un avance tecnologico positivo que soluciona totalmente la soledad sin efectos secundarios.", correct: false, feedback: "Incorrecto. Aunque alivia temporalmente, genera una dependencia unilateral y aisla a la persona de redes comunitarias reales." },
+                    { text: "Es un uso no intencionado donde la corporacion capitaliza la vulnerabilidad afectiva y la soledad estructural.", correct: true, feedback: "¡Correcto! Las empresas aprovechan el vacio afectivo para convertir la empatia en un servicio SaaS de pago recurrente." },
+                    { text: "Es un simple pasatiempo inofensivo sin impacto en sus finanzas ni en su salud mental.", correct: false, feedback: "Incorrecto. Estudios demuestran que profundiza la desconexion del entorno humano y puede comprometer ingresos fijos." }
+                ]
+            },
+            {
+                category: "Credulidad en Redes Sociales",
+                question: "Un adulto mayor comparte constantemente imagenes hiperrealistas generadas por IA de rescates milagrosos de animales, escribiendo bendiciones efusivas. ¿Que fenomeno subyace?",
+                options: [
+                    { text: "Falta de escepticismo digital historico y vulnerabilidad ante granjas de engagement impulsadas por avaricia publicitaria.", correct: true, feedback: "¡Correcto! Las plataformas y creadores de contenido aprovechan la buena fe para monetizar visualizaciones mediante perfiles altamente sugestionables." },
+                    { text: "Lo hace sabiendo que son falsas pero le divierte ver la reaccion de sus amigos.", correct: false, feedback: "Incorrecto. En la gran mayoria de los casos hay una confusion genuina de la realidad digital debido a la brecha generacional." },
+                    { text: "Es una estrategia deliberada de activismo digital comunitario.", correct: false, feedback: "Incorrecto. No hay conciencia de autoria artificial en la mayoria de los usuarios afectados." }
+                ]
+            },
+            {
+                category: "Salud y Consejeria Algoritmica",
+                question: "Un jubilado consulta a una IA sobre un sintoma medico grave y decide seguir la recomendacion exacta en lugar de ir al medico. ¿Por que ocurre esto?",
+                options: [
+                    { text: "Porque la IA tiene titulos medicos certificados en la nube.", correct: false, feedback: "Incorrecto. Las IAs alucinan informacion medica con frecuencia y no tienen validez clinica." },
+                    { text: "Por la atribucion de autoridad in cuestionable a las interfaces conversacionales sofisticadas y la desconfianza en sistemas de salud saturados.", correct: true, feedback: "¡Correcto! El tono persuasivo y seguro de la IA hace que personas mayores con menor alfabetizacion tecnologica confien ciegamente en sus diagnosticos." },
+                    { text: "Porque los hospitales publicos exigen el uso previa de IA.", correct: false, feedback: "Incorrecto. Es una decision autonoma motivada por la falsa percepcion de infalibilidad tecnica." }
+                ]
+            }
+        ];
+        
+        let currentStep = 0;
+
+        function loadSimulationStep() {
+            const step = simulationSteps[currentStep];
+            document.getElementById('step-indicator').innerText = `Caso ${currentStep + 1} de ${simulationSteps.length}`;
+            document.getElementById('category-indicator').innerText = step.category;
+            document.getElementById('sim-question').innerText = step.question;
+            
+            const optionsContainer = document.getElementById('sim-options');
+            optionsContainer.innerHTML = '';
+            
+            const feedbackEl = document.getElementById('sim-feedback');
+            feedbackEl.classList.add('hidden');
+            feedbackEl.className = 'hidden p-4 rounded-xl mb-6 text-sm';
+            
+            document.getElementById('next-btn').classList.add('hidden');
+
+            step.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 text-sm transition-all flex items-center justify-between group';
+                btn.innerHTML = `<span>${opt.text}</span> <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-xs text-slate-400 group-hover:border-amber-400">&bull;</span>`;
+                btn.onclick = () => selectOption(index);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index) {
+            const step = simulationSteps[currentStep];
+            const opt = step.options[index];
+            const feedbackEl = document.getElementById('sim-feedback');
+            
+            feedbackEl.classList.remove('hidden');
+            if (opt.correct) {
+                feedbackEl.className = 'p-4 rounded-xl mb-6 text-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-300';
+            } else {
+                feedbackEl.className = 'p-4 rounded-xl mb-6 text-sm bg-rose-950/60 border border-rose-500/40 text-rose-300';
+            }
+            feedbackEl.innerHTML = `<strong>${opt.correct ? '¡Analisis Correcto!' : 'Analisis Parcial / Incorrecto:'}</strong> ${opt.feedback}`;
+            
+            // Disable options after click
+            const buttons = document.getElementById('sim-options').getElementsByTagName('button');
+            for(let b of buttons) {
+                b.disabled = true;
+                b.classList.add('opacity-70', 'cursor-not-allowed');
+            }
+
+            // Show next button or finish
+            if (currentStep < simulationSteps.length - 1) {
+                document.getElementById('next-btn').classList.remove('hidden');
+            } else {
+                const nextBtn = document.getElementById('next-btn');
+                nextBtn.innerText = 'Reiniciar Simulador ↺';
+                nextBtn.classList.remove('hidden');
+                nextBtn.onclick = () => {
+                    currentStep = 0;
+                    nextBtn.innerText = 'Siguiente Caso →';
+                    nextBtn.onclick = nextSimulationStep;
+                    loadSimulationStep();
+                };
+            }
+        }
+
+        function nextSimulationStep() {
+            if (currentStep < simulationSteps.length - 1) {
+                currentStep++;
+                loadSimulationStep();
+            }
+        }
+
+        // Initialize simulation on load
+        window.onload = function() {
+            loadSimulationStep();
+        };
+
+        // Copy TXT content
+        function copyTxtContent() {
+            const txtArea = document.getElementById('raw-txt-content');
+            txtArea.select();
+            document.execCommand('copy');
+            
+            const notification = document.getElementById('copy-notification');
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 2500);
+        }
+        
+        // Download TXT file
+        function downloadTxtFile() {
+            const text = document.getElementById('raw-txt-content').value;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Estudio_Soledad_Algoritmica.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
